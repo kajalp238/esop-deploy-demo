@@ -42,6 +42,7 @@ jobs:
         id: terraform_output
         run: |
           echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> $GITHUB_OUTPUT
+          echo "::set-secret name=my_secret::secret_value"
 
   ci-cd:
     needs: [terraform]
