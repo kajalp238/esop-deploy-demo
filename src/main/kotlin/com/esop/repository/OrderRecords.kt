@@ -24,7 +24,6 @@ class OrderRecords {
         sellOrder.orderID = generateOrderId()
         sellOrders.add(sellOrder)
     }
-
     fun removeBuyOrder(buyOrder: Order) {
         buyOrders.remove(buyOrder)
     }
