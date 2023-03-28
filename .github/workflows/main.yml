@@ -2,6 +2,10 @@ name: build-test-deploy
 
 on:
   workflow_call:
+    secrets:
+      key:
+        description: 'needed for login'
+        required: true
   push:
     branches: [ "main" ]
 
