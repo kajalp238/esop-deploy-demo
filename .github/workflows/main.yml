@@ -53,6 +53,8 @@ jobs:
   ci-cd:
     needs: [terraform]
     uses: kajalp238/esop-deploy-demo/.github/workflows/main.yml@main
+    secrets:
+      key: ${{ secrets.KAJAL_EC2_SSH_KEY }}
 
 
 
