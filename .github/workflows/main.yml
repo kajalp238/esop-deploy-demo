@@ -42,7 +42,13 @@ jobs:
         id: terraform_output
         run: |
           echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> $GITHUB_OUTPUT
-          echo "::set-secret name=my_secret::secret_value"
+          terraform output instance_public_ip -json > output.json
+
+      - name: Upload Terraform Output JSON File as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraformOutput
+          path: output.json
 
   ci-cd:
     needs: [terraform]
