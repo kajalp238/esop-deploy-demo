@@ -44,6 +44,7 @@ jobs:
           echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> $GITHUB_OUTPUT
 
   ci-cd:
-    needs: [terraform]
+    needs: [ terraform ]
     runs-on: ubuntu-latest
-    uses: kajalp238/esop-deploy-demo/.github/workflows/main.yml@main
+    steps:
+      - uses: kajalp238/esop-deploy-demo/.github/workflows/main.yml@main
