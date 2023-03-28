@@ -42,7 +42,7 @@ jobs:
         id: terraform_output
         run: |
           echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> $GITHUB_OUTPUT
-          terraform output instance_public_ip -json > output.json
+          terraform output -json > output.json
 
       - name: Upload Terraform Output JSON File as Artifact
         uses: actions/upload-artifact@v3
