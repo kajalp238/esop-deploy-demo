@@ -56,5 +56,3 @@ jobs:
     secrets:
       key: ${{ secrets.KAJAL_EC2_SSH_KEY }}
 
-
-
