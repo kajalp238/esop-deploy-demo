@@ -20,7 +20,6 @@ class OrderRecords {
         buyOrder.orderID = generateOrderId()
         buyOrders.add(buyOrder)
     }
-
     fun addSellOrder(sellOrder: Order) {
         sellOrder.orderID = generateOrderId()
         sellOrders.add(sellOrder)
