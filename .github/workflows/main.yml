@@ -66,7 +66,7 @@ jobs:
           name: terraformOutput
       - name: Copy jar file to ec2 instance
         env:
-          SSH_PRIVATE_KEY: ${{secrets.KAJAL_EC2_SSH_KEY}}
+          SSH_PRIVATE_KEY: ${{secrets.key}}
           SSH_HOST: $(cat output.json | jq -r '.instance_public_ip.value')
 #          SSH_HOST: 44.202.123.63
         run: |
