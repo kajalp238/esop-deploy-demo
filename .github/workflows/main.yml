@@ -64,11 +64,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: esop-trading-1.0
-#      - name: Download terraform output
-#        uses: actions/download-artifact@v3
-#        with:
-#          name: terraformOutput
-
       - name: download ip file from s3
         id: terraform_output
         run: |
