@@ -67,7 +67,7 @@ jobs:
         id: terraform_output
         run: |
           aws s3 cp s3://kajal-bucket-test/output.txt terraform_output/output.txt
-          echo host=$(cat terraform_output/output.txt)
+          echo host=$(cat terraform_output/output.txt) >> $GITHUB_OUTPUT
 
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
