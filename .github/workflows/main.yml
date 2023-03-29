@@ -42,41 +42,13 @@ jobs:
         id: terraform_output
         run: |
           echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> $GITHUB_OUTPUT
-          echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> output.txt
-      #          terraform output -json > output.json
-      - uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --acl public-read --follow-symlinks --delete
-        env:
-          AWS_S3_BUCKET: "kajal-bucket-test"
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          SOURCE_DIR: './output.txt'
-
-#
-#      - name: Upload to S3
-#        uses: esop-deploy-demo/aws-s3-sync@v3
-#        with:
-#          args: --exclude ".git/*"
-#          source: ./output.txt
-#          dest: s3://kajal-bucket-test/
-#        env:
-#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#          AWS_REGION: us-east-1
+          mkdir terraform_output
+          echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> terraform_output/output.txt
+          aws s3 cp terraform_output/output.txt s3://kajal-bucket-test/
 
 
 
 
-#
-#      - name: Upload S3
-#        uses: shallwefootball/s3-upload-action@master
-#        id: S3
-#        with:
-#          aws_key_id: AWS_ACCESS_KEY_ID
-#          aws_secret_access_key: AWS_SECRET_ACCESS_KEY
-#          aws_bucket: "kajal-bucket-test"
-#          source_dir: '/'
 
 #      - name: Upload Terraform Output JSON File as Artifact
 #        uses: actions/upload-artifact@v3
