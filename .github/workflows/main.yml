@@ -43,7 +43,7 @@ jobs:
         run: |
           echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> $GITHUB_OUTPUT
           mkdir terraform_output
-          echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> terraform_output/output.txt
+          echo $(terraform output instance_public_ip | tr -d '"') >> terraform_output/output.txt
           aws s3 cp terraform_output/output.txt s3://kajal-bucket-test/
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
