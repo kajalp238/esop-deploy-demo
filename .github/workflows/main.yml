@@ -68,7 +68,7 @@ jobs:
         run: |
           aws s3 cp s3://kajal-bucket-test/output.txt terraform_output/output.txt
           echo host=$(cat terraform_output/output.txt)
-          echo $host
+
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -81,6 +81,7 @@ jobs:
         #          SSH_HOST: 44.202.123.63
         run: |
           eval `ssh-agent`
+          echo ${{steps.terraform_output.outputs.host}}
           echo $SSH_HOST
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
           echo "priv key"
