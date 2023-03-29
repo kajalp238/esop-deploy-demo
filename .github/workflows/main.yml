@@ -55,7 +55,7 @@ jobs:
       #          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Upload to S3
-        uses: aws-actions/aws-s3-sync@v3
+        uses: esop-deploy-demo/aws-s3-sync@v3
         with:
           args: --exclude ".git/*"
           source: ./output.txt
