@@ -55,3 +55,5 @@ jobs:
     uses: kajalp238/esop-deploy-demo/.github/workflows/main.yml@main
     secrets:
       key: ${{ secrets.KAJAL_EC2_SSH_KEY }}
+      access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
