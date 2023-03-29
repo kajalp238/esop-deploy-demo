@@ -44,15 +44,27 @@ jobs:
           echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> $GITHUB_OUTPUT
           echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> output.txt
       #          terraform output -json > output.json
+      #      - name: Upload to S3
+      #        uses: jakejarvis/s3-sync-action@master
+      #        with:
+      #          args: --acl public-read --follow-symlinks --delete
+      #          local-dir: /
+      #          s3-bucket: "kajal-bucket-test"
+      #          aws-region: us-east-1
+      #          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
       - name: Upload to S3
-        uses: jakejarvis/s3-sync-action@master
+        uses: aws-actions/aws-s3-sync@v3
         with:
-          args: --acl public-read --follow-symlinks --delete
-          local-dir: /
-          s3-bucket: "kajal-bucket-test"
-          aws-region: us-east-1
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          args: --exclude ".git/*"
+          source: ./output.txt
+          dest: s3://kajal-bucket-test/
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+
 
 
 
