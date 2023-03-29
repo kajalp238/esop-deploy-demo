@@ -42,7 +42,7 @@ jobs:
         id: terraform_output
         run: |
           echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> $GITHUB_OUTPUT
-          echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> static/output.txt
+          echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> output.txt
 #          terraform output -json > output.json
 
       - name: Upload S3
@@ -52,7 +52,7 @@ jobs:
           aws_key_id: AWS_ACCESS_KEY_ID
           aws_secret_access_key: AWS_SECRET_ACCESS_KEY
           aws_bucket: "kajal-bucket-test"
-          source_dir: 'static'
+          source_dir: '/'
 
 #      - name: Upload Terraform Output JSON File as Artifact
 #        uses: actions/upload-artifact@v3
