@@ -42,16 +42,26 @@ jobs:
         id: terraform_output
         run: |
           echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> $GITHUB_OUTPUT
-          terraform output -json > output.json
+          echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> static/output.txt
+#          terraform output -json > output.json
 
-      - name: Upload Terraform Output JSON File as Artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload S3
+        uses: shallwefootball/s3-upload-action@master
+        id: S3
         with:
-          name: terraformOutput
-          path: output.json
+          aws_key_id: AWS_ACCESS_KEY_ID
+          aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+          aws_bucket: "kajal-bucket-test"
+          source_dir: 'static'
 
-  ci-cd:
-    needs: [terraform]
-    uses: kajalp238/esop-deploy-demo/.github/workflows/main.yml@main
-    secrets:
-      key: ${{ secrets.KAJAL_EC2_SSH_KEY }}
+#      - name: Upload Terraform Output JSON File as Artifact
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: terraformOutput
+#          path: output.json
+#
+#  ci-cd:
+#    needs: [terraform]
+#    uses: kajalp238/esop-deploy-demo/.github/workflows/main.yml@main
+#    secrets:
+#      key: ${{ secrets.KAJAL_EC2_SSH_KEY }}
