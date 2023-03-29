@@ -63,11 +63,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: esop-trading-1.0
-      - name: download ip file from s3
+      - name: Download ip file from s3
         id: terraform_output
         run: |
           aws s3 cp s3://kajal-bucket-test/output.txt terraform_output/output.txt
-          cat terraform_output/output.txt
+          echo host=$(cat terraform_output/output.txt)
+          echo $host
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -76,7 +77,7 @@ jobs:
       - name: Copy jar file to ec2 instance
         env:
           SSH_PRIVATE_KEY: ${{secrets.KAJAL_EC2_SSH_KEY}}
-          SSH_HOST: $(cat terraform_output/output.txt) | tr -d '"'
+          SSH_HOST: ${{steps.deploy.outputs.host}}
         #          SSH_HOST: 44.202.123.63
         run: |
           eval `ssh-agent`
