@@ -3,11 +3,10 @@ name: Terraform CI/CD Pipeline
 on:
   push:
     branches: [ "terraform-deploy" ]
-  workflow_dispatch:
 
 jobs:
   terraform:
-    name: "terraform-job"
+    name: "terraform-plan-job"
     outputs:
       host: ${{ steps.terraform_output.outputs.public_ip }}
 
@@ -36,6 +35,22 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
 
+  terraform-apply:
+    name: "terraform-apply-job"
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Terraform Init
+        run: terraform init -backend-config=backend.conf
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_wrapper: false
+
       - name: Terraform Apply
         run: terraform apply -auto-approve -input=false
 
@@ -52,7 +67,7 @@ jobs:
           AWS_REGION: 'us-east-1'
 
   ci-cd:
-    needs: [terraform]
+    needs: [terraform-apply]
     uses: kajalp238/esop-deploy-demo/.github/workflows/main.yml@main
     secrets:
       KAJAL_EC2_SSH_KEY: ${{ secrets.KAJAL_EC2_SSH_KEY }}
