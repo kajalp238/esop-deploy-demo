@@ -37,6 +37,7 @@ jobs:
 
   terraform-apply:
     name: "terraform-apply-job"
+    needs: [terraform]
     runs-on: ubuntu-latest
     environment: production
     steps:
