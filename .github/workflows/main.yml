@@ -72,8 +72,8 @@ jobs:
       - name: download ip file from s3
         id: terraform_output
         run: |
-          aws s3 cp s3://kajal-bucket-test/output.txt output.txt
-          cat output.txt
+          aws s3 cp s3://kajal-bucket-test/output.txt terraform_output/output.txt
+          cat terraform_output/output.txt
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.access_key_id }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.secret_access_key }}
@@ -86,8 +86,7 @@ jobs:
           SSH_HOST: 44.202.123.63
         run: |
           eval `ssh-agent`
-          echo SSH_HOST
-          cat output.json
+          echo $SSH_HOST
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
           echo "priv key"
           scp -T -o StrictHostKeyChecking=no "esop-0.1-all.jar" ec2-user@$SSH_HOST:~
