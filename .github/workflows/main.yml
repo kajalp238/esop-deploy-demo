@@ -74,6 +74,7 @@ jobs:
         run: |
           aws s3 cp s3://kajal-bucket-test/output.txt terraform_output/output.txt
           cat terraform_output/output.txt
+          echo grep -oP 'public_ip=\K[\d.]+' terraform_output/output.txt
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.access_key_id }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.secret_access_key }}
@@ -82,7 +83,7 @@ jobs:
       - name: Copy jar file to ec2 instance
         env:
           SSH_PRIVATE_KEY: ${{secrets.key}}
-#          SSH_HOST: $(cat output.json | jq -r '.instance_public_ip.value') | tr -d '"'
+          #          SSH_HOST: $(cat output.json | jq -r '.instance_public_ip.value') | tr -d '"'
           SSH_HOST: 44.202.123.63
         run: |
           eval `ssh-agent`
