@@ -3,18 +3,17 @@ name: build-test-deploy
 on:
   workflow_call:
     secrets:
-      key:
-        description: 'needed for login'
+      KAJAL_EC2_SSH_KEY:
         required: true
-      access_key_id:
+      AWS_ACCESS_KEY_ID:
         required: true
-      secret_access_key:
+      AWS_SECRET_ACCESS_KEY:
         required: true
   push:
     branches: [ "main" ]
 
 jobs:
- 
+
   build:
     name: "build the application"
     runs-on: ubuntu-latest
@@ -69,17 +68,16 @@ jobs:
         run: |
           aws s3 cp s3://kajal-bucket-test/output.txt terraform_output/output.txt
           cat terraform_output/output.txt
-          echo grep -oP 'public_ip=\K[\d.]+' terraform_output/output.txt
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.access_key_id }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.secret_access_key }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'us-east-1'
 
       - name: Copy jar file to ec2 instance
         env:
-          SSH_PRIVATE_KEY: ${{secrets.key}}
-          #          SSH_HOST: $(cat output.json | jq -r '.instance_public_ip.value') | tr -d '"'
-          SSH_HOST: 44.202.123.63
+          SSH_PRIVATE_KEY: ${{secrets.KAJAL_EC2_SSH_KEY}}
+          SSH_HOST: $(cat terraform_output/output.txt) | tr -d '"'
+        #          SSH_HOST: 44.202.123.63
         run: |
           eval `ssh-agent`
           echo $SSH_HOST
