@@ -47,10 +47,8 @@ jobs:
       - uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
-          source_dir: ./output.txt
-          dest_dir: s3://kajal-bucket-test/output.txt
         env:
-          AWS_REGION: us-east-1
+          AWS_S3_BUCKET: "kajal-bucket-test"
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
