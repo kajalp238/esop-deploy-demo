@@ -72,7 +72,7 @@ jobs:
       - name: download ip file from s3
         id: terraform_output
         run: |
-          aws s3 cp s3://kajal-bucket-test/output.txt
+          aws s3 cp s3://kajal-bucket-test/output.txt output.txt
           cat output.txt
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.access_key_id }}
