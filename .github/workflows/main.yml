@@ -54,6 +54,6 @@ jobs:
     needs: [terraform]
     uses: kajalp238/esop-deploy-demo/.github/workflows/main.yml@main
     secrets:
-      key: ${{ secrets.KAJAL_EC2_SSH_KEY }}
-      access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      KAJAL_EC2_SSH_KEY: ${{ secrets.KAJAL_EC2_SSH_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
