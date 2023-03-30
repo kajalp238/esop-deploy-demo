@@ -4,16 +4,14 @@ on:
   push:
     branches: [ "terraform-deploy" ]
 
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: 'us-east-1'
+
 jobs:
   terraform:
     name: "terraform-plan-job"
-    outputs:
-      host: ${{ steps.terraform_output.outputs.public_ip }}
-
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
     runs-on: ubuntu-latest
     environment: dev
     defaults:
@@ -40,9 +38,7 @@ jobs:
     needs: [terraform]
     runs-on: ubuntu-latest
     environment: production
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -65,12 +61,8 @@ jobs:
           mkdir terraform_output
           echo $(terraform output instance_public_ip | tr -d '"') >> terraform_output/output.txt
           aws s3 cp terraform_output/output.txt s3://kajal-bucket-test/
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: 'us-east-1'
 
-  ci-cd:
+  deploy-application:
     needs: [terraform-apply]
     uses: kajalp238/esop-deploy-demo/.github/workflows/main.yml@main
     secrets:
