@@ -80,12 +80,8 @@ jobs:
           SSH_HOST: ${{steps.terraform_output.outputs.host}}
         run: |
           eval `ssh-agent`
-          echo ${{steps.terraform_output.outputs.host}}
-          echo $SSH_HOST
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-          echo "priv key"
           scp -T -o StrictHostKeyChecking=no "esop-0.1-all.jar" ec2-user@$SSH_HOST:~
-          echo "scp"
           ssh -T -o StrictHostKeyChecking=no ec2-user@$SSH_HOST -t '
             pid=$(fuser 8080/tcp)
             if [ $pid ]
