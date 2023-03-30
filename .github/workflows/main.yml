@@ -14,9 +14,6 @@ jobs:
     name: "terraform-plan-job"
     runs-on: ubuntu-latest
     environment: dev
-    defaults:
-      run:
-        shell: bash
 
     steps:
       - name: Checkout
@@ -24,11 +21,6 @@ jobs:
 
       - name: Terraform Init
         run: terraform init -backend-config=backend.conf
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_wrapper: false
 
       - name: Terraform Plan
         run: terraform plan
@@ -45,11 +37,6 @@ jobs:
 
       - name: Terraform Init
         run: terraform init -backend-config=backend.conf
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_wrapper: false
 
       - name: Terraform Apply
         run: terraform apply -auto-approve -input=false
