@@ -47,7 +47,7 @@ jobs:
           echo public_ip=$(terraform output instance_public_ip | tr -d '"') >> $GITHUB_OUTPUT
           mkdir terraform_output
           echo $(terraform output instance_public_ip | tr -d '"') >> terraform_output/output.txt
-          aws s3 cp terraform_output/output.txt s3://kajal-bucket-test/
+          aws s3 sync terraform_output s3://kajal-bucket-test/
 
   deploy-application:
     name: "deploy-application"
