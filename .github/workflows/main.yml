@@ -50,6 +50,7 @@ jobs:
           aws s3 cp terraform_output/output.txt s3://kajal-bucket-test/
 
   deploy-application:
+    name: "deploy-application"
     needs: [terraform-apply]
     uses: kajalp238/esop-deploy-demo/.github/workflows/main.yml@main
     secrets:
