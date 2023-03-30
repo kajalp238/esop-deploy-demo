@@ -15,7 +15,7 @@ on:
 jobs:
 
   build:
-    name: "build the application"
+    name: "build"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -63,7 +63,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: esop-trading-1.0
-      - name: Download ip file from s3
+      - name: Access host from s3
         id: terraform_output
         run: |
           aws s3 cp s3://kajal-bucket-test/output.txt terraform_output/output.txt
@@ -78,7 +78,6 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{secrets.KAJAL_EC2_SSH_KEY}}
           SSH_HOST: ${{steps.terraform_output.outputs.host}}
-        #          SSH_HOST: 44.202.123.63
         run: |
           eval `ssh-agent`
           echo ${{steps.terraform_output.outputs.host}}
